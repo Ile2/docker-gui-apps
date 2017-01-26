@@ -5,11 +5,11 @@
 # xhost + $ip
 
 # ALL ELSE (OSX invocation):
-# docker run -it --net host --cpuset-cpus 0 --memory 1024mb -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=192.168.0.5:0 --name intellij e603774dc600
+# docker run -it --net host --cpuset-cpus 0 --memory 1024mb -v /tmp/.X11-unix:/tmp/.X11-unix -v DIRTOROOT:/root -e DISPLAY=192.168.0.5:0 --name intellij e603774dc600
 #
 # Directories:
 # Project /root/IdeaProjects
-# Plugins
+# Plugins 
 # 
 
 # Base docker image
@@ -38,38 +38,36 @@ RUN apt-get update && apt-get install -f -y \
 	libv4l-0 \
 	libxrender1 \
 	libxi-dev \
+	libsecret-1-0 \
 	psmisc \
 	perl-base \
 	perl-modules \
+	gnome-keyring \
 --no-install-recommends
 RUN apt-get update && apt-get install -f -y \
 git
 
-#Accept oracle license
 
-#RUN fuser -k /var/cache/debconf/config.dat
-
+#Install Java8
 
 RUN add-apt-repository ppa:webupd8team/java && \ 
 apt-get update && \
 echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
 apt-get install -y -f oracle-java8-installer && \
-update-java-alternatives -s java-8-oracle && \
+update-java-alternatives -s java-8-oracle
 
-wget -O /tmp/intellij.tar.gz https://download.jetbrains.com/idea/ideaIC-2016.3.2-no-jdk.tar.gz && \
-tar xfz /tmp/intellij.tar.gz
-# cd idea-IC-123.169/bin &&
-# ./idea.sh 
+# Download intellij
+ADD  https://download.jetbrains.com/idea/ideaIC-2016.3.2-no-jdk.tar.gz /tmp/intellij.tar.gz
+RUN tar xfz /tmp/intellij.tar.gz
+ 
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove -y
 
-#COPY local.conf /etc/fonts/local.conf
-
 #Dl plugin
 
-ADD https://download.sonatype.com/iq/idea/nexus-iq-idea-plugin-1.0.2-02.zip /root/nexus-iq-plugin.zip
 
+# Antialiasing baby
 RUN echo -Dawt.useSystemAAFontSettings=on >> /idea-IC-163.10154.41/bin/idea64.vmoptions  && echo -Dswing.aatext=true >> /idea-IC-163.10154.41/bin/idea64.vmoptions 
 
-# Autorun chrome
+# Autorun intellij
 ENTRYPOINT [ "/idea-IC-163.10154.41/bin/idea.sh" ]
