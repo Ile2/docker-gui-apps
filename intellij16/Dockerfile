@@ -4,7 +4,7 @@
 # ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
 # xhost + $ip
 
-# ALL ELSE:
+# ALL ELSE (OSX invocation):
 # docker run -it --net host --cpuset-cpus 0 --memory 1024mb -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=192.168.0.5:0 --name intellij e603774dc600
 #
 # Directories:
@@ -13,8 +13,8 @@
 # 
 
 # Base docker image
-FROM ubuntu:latest
-MAINTAINER ilkka turudnen <iturunen@sonatype.com>
+FROM ubuntu:trusty
+MAINTAINER ilkka turunen <iturunen@sonatype.com>
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd \
@@ -31,7 +31,6 @@ RUN apt-get update && apt-get install -f -y \
 	ca-certificates \
 	curl \
 	gnupg \
-	git \
 	hicolor-icon-theme \
 	libgl1-mesa-dri \
 	libgl1-mesa-glx \
@@ -43,6 +42,8 @@ RUN apt-get update && apt-get install -f -y \
 	perl-base \
 	perl-modules \
 --no-install-recommends
+RUN apt-get update && apt-get install -f -y \
+git
 
 #Accept oracle license
 
@@ -59,6 +60,8 @@ wget -O /tmp/intellij.tar.gz https://download.jetbrains.com/idea/ideaIC-2016.3.2
 tar xfz /tmp/intellij.tar.gz
 # cd idea-IC-123.169/bin &&
 # ./idea.sh 
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #COPY local.conf /etc/fonts/local.conf
 
