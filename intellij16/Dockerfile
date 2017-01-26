@@ -39,9 +39,10 @@ RUN apt-get update && apt-get install -f -y \
 	libxrender1 \
 	libxi-dev \
 	libsecret-1-0 \
+	libgtk2.0-bin \ 
+	libXtst6 \
+	libxslt1.1 \ 
 	libswt-gtk-3-java \
-	gkt3 \
-	psmisc \
 	perl-base \
 	perl-modules \
 	gnome-keyring \
