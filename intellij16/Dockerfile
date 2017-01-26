@@ -61,9 +61,13 @@ tar xfz /tmp/intellij.tar.gz
 # cd idea-IC-123.169/bin &&
 # ./idea.sh 
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove -y
 
 #COPY local.conf /etc/fonts/local.conf
+
+#Dl plugin
+
+ADD https://download.sonatype.com/iq/idea/nexus-iq-idea-plugin-1.0.2-02.zip /root/nexus-iq-plugin.zip
 
 RUN echo -Dawt.useSystemAAFontSettings=on >> /idea-IC-163.10154.41/bin/idea64.vmoptions  && echo -Dswing.aatext=true >> /idea-IC-163.10154.41/bin/idea64.vmoptions 
 
