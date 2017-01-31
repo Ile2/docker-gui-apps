@@ -52,7 +52,6 @@ git
 
 
 #Install Java8
-
 RUN add-apt-repository ppa:webupd8team/java && \ 
 apt-get update && \
 echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
@@ -63,7 +62,7 @@ update-java-alternatives -s java-8-oracle
 ADD  https://download.jetbrains.com/idea/ideaIC-2016.3.2-no-jdk.tar.gz /tmp/intellij.tar.gz
 RUN tar xfz /tmp/intellij.tar.gz
  
-
+#Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove -y
 
 #Dl plugin
