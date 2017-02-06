@@ -59,14 +59,20 @@ apt-get install -y -f oracle-java8-installer && \
 update-java-alternatives -s java-8-oracle
 
 # Download intellij
-ADD  https://download.jetbrains.com/idea/ideaIC-2016.3.2-no-jdk.tar.gz /tmp/intellij.tar.gz
-RUN tar xfz /tmp/intellij.tar.gz
+#ADD  https://download.jetbrains.com/idea/ideaIC-2016.3.2-no-jdk.tar.gz /tmp/intellij.tar.gz
+
+ADD ideaIC-2016.3.2.tar.gz /
+RUN ls -ll /idea-IC-163.10154.41
+
+#RUN tar xfz /tmp/intellij.tar.gz
  
 #Clean up
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove -y
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove --purge -y
 
 #Dl plugin
+ADD root.tar.gz /root/
 
+RUN ls -ll /root
 
 # Antialiasing baby
 RUN echo -Dawt.useSystemAAFontSettings=on >> /idea-IC-163.10154.41/bin/idea64.vmoptions  && echo -Dswing.aatext=true >> /idea-IC-163.10154.41/bin/idea64.vmoptions 
