@@ -13,7 +13,7 @@
 # 
 
 # Base docker image
-FROM ubuntu:trusty
+FROM ubuntu:xenial
 MAINTAINER ilkka turunen <iturunen@sonatype.com>
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -21,6 +21,11 @@ ENV _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd \
                       -Dsun.java2d.xrender=true"
 
 ENV GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+
+ADD ideaIC-2016.3.2.tar.gz /
+
+ADD root.tar.gz /root/
+
 
 #Apparently this is missing because of things
 RUN apt-get update && \
@@ -55,12 +60,10 @@ apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autore
 # Download intellij
 #ADD  https://download.jetbrains.com/idea/ideaIC-2016.3.2-no-jdk.tar.gz /tmp/intellij.tar.gz
 
-ADD ideaIC-2016.3.2.tar.gz /
  
 #Clean up
 
 #Dl plugin
-ADD root.tar.gz /root/
 
 # Antialiasing baby
 # RUN echo -Dawt.useSystemAAFontSettings=on >> /idea-IC-163.10154.41/bin/idea64.vmoptions  && echo -Dswing.aatext=true >> /idea-IC-163.10154.41/bin/idea64.vmoptions 
