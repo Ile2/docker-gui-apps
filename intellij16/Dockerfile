@@ -31,7 +31,6 @@ add-apt-repository ppa:webupd8team/java && \
 apt-get update && \
 echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
 apt-get install -f -y \
-	software-properties-common \
 	libxtst6 \
 	libfreetype6 \
 	apt-transport-https \
@@ -39,7 +38,6 @@ apt-get install -f -y \
 	gnupg \
 	libgl1-mesa-dri \
 	libgl1-mesa-glx \
-	libpulse0 \
 	libv4l-0 \
 	libxrender1 \
 	libxi-dev \
@@ -48,13 +46,11 @@ apt-get install -f -y \
 	libXtst6 \
 	libxslt1.1 \ 
 	libswt-gtk-3-java \
-	gnome-keyring \
 	git \
 	oracle-java8-installer \
 --no-install-recommends && \
 update-java-alternatives -s java-8-oracle && \
 apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove --purge -y
-
 
 # Download intellij
 #ADD  https://download.jetbrains.com/idea/ideaIC-2016.3.2-no-jdk.tar.gz /tmp/intellij.tar.gz
@@ -67,7 +63,7 @@ ADD ideaIC-2016.3.2.tar.gz /
 ADD root.tar.gz /root/
 
 # Antialiasing baby
-RUN echo -Dawt.useSystemAAFontSettings=on >> /idea-IC-163.10154.41/bin/idea64.vmoptions  && echo -Dswing.aatext=true >> /idea-IC-163.10154.41/bin/idea64.vmoptions 
+# RUN echo -Dawt.useSystemAAFontSettings=on >> /idea-IC-163.10154.41/bin/idea64.vmoptions  && echo -Dswing.aatext=true >> /idea-IC-163.10154.41/bin/idea64.vmoptions 
 
 # Autorun intellij
 ENTRYPOINT [ "/idea-IC-163.10154.41/bin/idea.sh" ]
