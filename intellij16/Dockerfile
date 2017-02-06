@@ -23,7 +23,10 @@ ENV _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd \
 ENV GNOME_DESKTOP_SESSION_ID=this-is-deprecated
 
 #Apparently this is missing because of things
-RUN apt-get update && apt-get install -f -y \
+RUN add-apt-repository ppa:webupd8team/java && \  
+apt-get update && \
+echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
+apt-get install -f -y \
 	software-properties-common \
 	libxtst6 \
 	libfreetype6 \
@@ -43,36 +46,23 @@ RUN apt-get update && apt-get install -f -y \
 	libXtst6 \
 	libxslt1.1 \ 
 	libswt-gtk-3-java \
-	perl-base \
-	perl-modules \
 	gnome-keyring \
---no-install-recommends
-RUN apt-get update && apt-get install -f -y \
-git
+	git
+	oracle-java8-installer
+--no-install-recommends && \
+update-java-alternatives -s java-8-oracle && \
+apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove --purge -y
 
-
-#Install Java8
-RUN add-apt-repository ppa:webupd8team/java && \ 
-apt-get update && \
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-apt-get install -y -f oracle-java8-installer && \
-update-java-alternatives -s java-8-oracle
 
 # Download intellij
 #ADD  https://download.jetbrains.com/idea/ideaIC-2016.3.2-no-jdk.tar.gz /tmp/intellij.tar.gz
 
 ADD ideaIC-2016.3.2.tar.gz /
-RUN ls -ll /idea-IC-163.10154.41
-
-#RUN tar xfz /tmp/intellij.tar.gz
  
 #Clean up
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove --purge -y
 
 #Dl plugin
 ADD root.tar.gz /root/
-
-RUN ls -ll /root
 
 # Antialiasing baby
 RUN echo -Dawt.useSystemAAFontSettings=on >> /idea-IC-163.10154.41/bin/idea64.vmoptions  && echo -Dswing.aatext=true >> /idea-IC-163.10154.41/bin/idea64.vmoptions 
