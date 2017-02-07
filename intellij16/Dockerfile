@@ -22,12 +22,12 @@ ENV _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd \
 
 ENV GNOME_DESKTOP_SESSION_ID=this-is-deprecated
 
+# Mount idea-distro and root directory for projects
 ADD ideaIC-2016.3.2.tar.gz /
-
 ADD root.tar.gz /root/
 
 
-#Apparently this is missing because of things
+#Install all required packages
 RUN apt-get update && \
 apt-get install -f -y \
 	software-properties-common \ 
@@ -48,25 +48,14 @@ apt-get install -f -y \
 	libxi-dev \
 	libsecret-1-0 \
 	libgtk2.0-bin \ 
-	libXtst6 \
+	libxtst6 \
 	libxslt1.1 \ 
 	libswt-gtk-3-java \
 	git \
 	oracle-java8-installer \
 --no-install-recommends && \
 update-java-alternatives -s java-8-oracle && \
-apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove --purge -y
-
-# Download intellij
-#ADD  https://download.jetbrains.com/idea/ideaIC-2016.3.2-no-jdk.tar.gz /tmp/intellij.tar.gz
-
- 
-#Clean up
-
-#Dl plugin
-
-# Antialiasing baby
-# RUN echo -Dawt.useSystemAAFontSettings=on >> /idea-IC-163.10154.41/bin/idea64.vmoptions  && echo -Dswing.aatext=true >> /idea-IC-163.10154.41/bin/idea64.vmoptions 
+apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get autoremove --purge -y 
 
 # Autorun intellij
 ENTRYPOINT [ "/idea-IC-163.10154.41/bin/idea.sh" ]
